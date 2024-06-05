@@ -1,0 +1,24 @@
+name: Octo Organization CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  doxygen:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copying README inside owl so that Doxygen finds it
+        run: cp ./README.md owl/README.md
+
+      - name: run Doxygen
+        uses: mattnotmitt/doxygen-action@v1.9.5
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./html
